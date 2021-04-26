@@ -76,7 +76,6 @@ public class KubernetesController {
 
         Map<String, String> dataMap = new HashMap<>(4);
         try {
-            System.out.println(kubeMap);
             //删除源文件，并将kubernetes文件进行归档
             String targetPath = kubeService.createK8sZip(kubeMap);
 

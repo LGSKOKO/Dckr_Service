@@ -52,10 +52,8 @@ public class RancherController {
         Map<String, List<String>> dataMap = new HashMap<>(4);
         //先构建kubernetes结构，其次读取YAML文件转JSON并返回
         try {
-            System.out.println("upload/docker-compose");
             //上传文件 并且 获取存储路径
             String storagePath = kubeService.upload(uploadStructure);
-            System.out.println("storagePath：" + storagePath);
             Thread.sleep(500);
             //通过上传结构体和存储路径，将文件转为kubernetes文件
             kubeService.convertToKubernetes(uploadStructure, storagePath);
@@ -64,7 +62,6 @@ public class RancherController {
             String targetPath = kubeService.putInOrder(storagePath);
             Thread.sleep(300);
             Map<String, List<String>> map = rancherService.parseAllFile(targetPath);
-            System.out.println("JSONList:" + map.get("JSONList"));
             List<String> targetList = new LinkedList<>();
             targetList.add(targetPath);
 
@@ -96,14 +93,11 @@ public class RancherController {
         Map<String, List<String>> dataMap = new HashMap<>(4);
 
         try {
-            System.out.println("upload/kubernetes");
             //上传文件 并且 获取存储路径
             String storagePath = rancherService.upload(uploadStructure);
-            System.out.println("storagePath：" + storagePath);
             Thread.sleep(500);
             //解压压缩包并解析所有文件，返回JSON列表
             Map<String, List<String>> map = rancherService.parseAllFile(storagePath);
-            System.out.println("JSONList:" + map.get("JSONList"));
             Thread.sleep(500);
 
 
@@ -114,12 +108,10 @@ public class RancherController {
             dataMap.put("JSONList", map.get("JSONList"));
             dataMap.put("fileList", map.get("fileList"));
 
-            System.out.println("===============================");
 
         } catch (ServiceException | IOException | InterruptedException e) {
             return new ReturnStructure(400, "上传失败！");
         }
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         return new ReturnStructure(200, "上传成功！", dataMap);
 
@@ -138,17 +130,15 @@ public class RancherController {
         if (rancherUpload == null) {
             return new ReturnStructure(400, "上传失败，服务器错误！！！");
         }
-        System.out.println("rancherUpload:" + rancherUpload);
         try {
             rancherService.constructRancher(rancherUpload);
         } catch (IOException e) {
             return new ReturnStructure(400, "构建失败！");
         }
-        System.out.println(rancherUpload.toString());
         //
         Map<String, String> dataMap = new HashMap<>(4);
         dataMap.put("downloadPath", rancherUpload.getStorePath());
-        return new ReturnStructure(20,"构建成功",dataMap);
+        return new ReturnStructure(200,"构建成功",dataMap);
     }
 
     @GetMapping("download/{dir}")

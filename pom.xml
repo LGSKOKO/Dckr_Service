@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.esunny</groupId>
 	<artifactId>Dckr_Service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Dckr_Service</name>
 	<description>Docker Compose Kubernetes Rancher</description>
 	<properties>
